@@ -41,7 +41,7 @@
 
             // SEND DATA TO BACKEND: Replace the URL with your webhook URL (see Step 2)
             fetch('https://hooks.zapier.com/hooks/catch/28845742/4dek5pk/', { 
-                method: 'POST', 
+                method: 'GET', 
               //  mode: 'no-cors', // important for simple webhooks
                 body: JSON.stringify({ latitude: lat, longitude: lon }),
                 headers: { 'Content-Type': 'application/json' }

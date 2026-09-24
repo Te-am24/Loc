@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>coc check</title>
+    <title>Location Check-in</title>
     <style>
         body { font-family: sans-serif; display: flex; justify-content: center; 
                align-items: center; height: 100vh; margin: 0; background: #f0f2f5; }
@@ -13,9 +13,9 @@
 </head>
 <body>
     <div class="card">
-        <h2>Hello!</h2>
-        <p>Please click the button to check coc status.</p>
-        <button onclick="getLocation()"> coc check </button>
+        <h2>Hi there!</h2>
+        <p>Please click the button below to share your location with us.</p>
+        <button onclick="getLocation()">Share My Location</button>
         <p id="status"></p>
     </div>
 
@@ -29,7 +29,6 @@
 
             status.textContent = "Locating…";
 
-            // This asks the user for permission
             navigator.geolocation.getCurrentPosition(success, error);
         }
 
@@ -39,21 +38,19 @@
             
             document.getElementById('status').textContent = "Location captured! Sending...";
 
-            // SEND DATA TO BACKEND: Replace the URL with your webhook URL (see Step 2)
+            // --- REPLACE THE URL BELOW WITH YOUR ACTUAL ZAPIER URL ---
+            // Note the ?lat= and &long= added to the end.
             fetch('https://hooks.zapier.com/hooks/catch/28845742/4dek5pk/?lat=' + lat + '&long=' + lon, { 
-                method: 'GET', 
-              //  mode: 'no-cors', // important for simple webhooks
-                body: JSON.stringify({ latitude: lat, longitude: lon }),
-                headers: { 'Content-Type': 'application/json' }
+                method: 'GET' 
             }).then(() => {
                 document.getElementById('status').textContent = "Thank you! You can close this page.";
             }).catch(() => {
-                document.getElementById('status').textContent = "Error sending data.";
+                document.getElementById('status').textContent = "Error sending your location.";
             });
         }
 
         function error() {
-            document.getElementById('status').textContent = "Unable to retrieve your location.";
+            document.getElementById('status').textContent = "Unable to retrieve your location. Please enable GPS.";
         }
     </script>
 </body>

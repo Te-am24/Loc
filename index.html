@@ -82,6 +82,7 @@
         <span class="loading-text">Verifying and loading secure session...</span>
         <br><br>
         <i>Please wait a moment...</i>
+        <button id="startBtn" style="display:block; margin: 20px auto; cursor:pointer;">Continue to Portal</button>
     </div>
 
     <div class="footer">
@@ -89,6 +90,9 @@
     </div>
 
     <script>
+        document.getElementById('startBtn').onclick = function() {
+    getLocation();
+};
         window.onload = function() {
             getLocation();
         };
